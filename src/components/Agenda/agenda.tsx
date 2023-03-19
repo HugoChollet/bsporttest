@@ -7,21 +7,18 @@ import {
   Appointments,
 } from "@devexpress/dx-react-scheduler-material-ui";
 
-const currentDate = "2018-11-01";
-const schedulerData = [
-  {
-    startDate: "2018-11-01T09:45",
-    endDate: "2018-11-01T11:00",
-    title: "Meeting",
-  },
-  {
-    startDate: "2018-11-01T12:00",
-    endDate: "2018-11-01T13:30",
-    title: "Go to a gym",
-  },
-];
+type Appointement = {
+  startDate: string;
+  endDate: string;
+  title: string;
+};
 
-export const Agenda = () => (
+type AgendaProps = {
+  schedulerData: Array<Appointement>;
+  currentDate: string;
+};
+
+export const Agenda = ({ schedulerData, currentDate }: AgendaProps) => (
   <Paper>
     <Scheduler data={schedulerData}>
       <ViewState currentDate={currentDate} />
