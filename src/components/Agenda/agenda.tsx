@@ -3,7 +3,7 @@ import Paper from "@mui/material/Paper";
 import { ViewState } from "@devexpress/dx-react-scheduler";
 import {
   Scheduler,
-  DayView,
+  WeekView,
   Appointments,
 } from "@devexpress/dx-react-scheduler-material-ui";
 
@@ -25,7 +25,7 @@ export const Agenda = () => (
   <Paper>
     <Scheduler data={schedulerData}>
       <ViewState currentDate={currentDate} />
-      <DayView startDayHour={9} endDayHour={14} />
+      <WeekView startDayHour={9} endDayHour={14} />
       <Appointments />
     </Scheduler>
   </Paper>
