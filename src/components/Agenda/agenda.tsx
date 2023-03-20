@@ -12,7 +12,7 @@ export const Agenda = ({ schedulerData, currentDate }: AgendaProps) => (
   <Paper>
     <Scheduler data={schedulerData}>
       <ViewState currentDate={currentDate} />
-      <WeekView startDayHour={9} endDayHour={14} />
+      <WeekView startDayHour={10} endDayHour={24} />
       <Appointments />
     </Scheduler>
   </Paper>
