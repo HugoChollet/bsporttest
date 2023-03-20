@@ -6,17 +6,7 @@ import {
   WeekView,
   Appointments,
 } from "@devexpress/dx-react-scheduler-material-ui";
-
-type Appointement = {
-  startDate: string;
-  endDate: string;
-  title: string;
-};
-
-type AgendaProps = {
-  schedulerData: Array<Appointement>;
-  currentDate: string;
-};
+import { AgendaProps } from "./agenda.type";
 
 export const Agenda = ({ schedulerData, currentDate }: AgendaProps) => (
   <Paper>
