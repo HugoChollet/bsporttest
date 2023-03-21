@@ -20,7 +20,7 @@ export default function AgendaScreen() {
           endDate.setUTCMinutes(time.duration_minute);
 
           return {
-            startDate: time.date_start,
+            startDate: new Date(time.date_start),
             endDate: endDate,
             title: "Appointement",
           };
