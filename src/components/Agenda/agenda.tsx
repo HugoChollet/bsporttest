@@ -14,6 +14,7 @@ import {
   Toolbar,
 } from "@devexpress/dx-react-scheduler-material-ui";
 import { AgendaProps } from "./agenda.type";
+import { Tooltip } from "../Tooltip/Tooltip.component";
 
 export const Agenda = ({ schedulerData, currentDate }: AgendaProps) => (
   <Paper>
@@ -25,9 +26,8 @@ export const Agenda = ({ schedulerData, currentDate }: AgendaProps) => (
       <DayView startDayHour={0} endDayHour={24} />
       <WeekView startDayHour={10} endDayHour={24} />
       <MonthView />
-      <Appointments />
+      <Appointments appointmentContentComponent={Tooltip} />
       <AppointmentTooltip showCloseButton showOpenButton />
-      {/* <AppointmentForm readOnly /> */}
       <Toolbar />
       <ViewSwitcher />
       <DateNavigator />
