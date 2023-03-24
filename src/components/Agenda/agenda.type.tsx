@@ -5,8 +5,3 @@ export type Appointement = {
   coach: string;
   establishment: string;
 };
-
-export type AgendaProps = {
-  schedulerData: Array<Appointement>;
-  currentDate: string;
-};

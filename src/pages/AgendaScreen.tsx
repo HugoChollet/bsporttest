@@ -1,52 +1,56 @@
 import { useEffect, useState } from "react";
 
-import { Agenda } from "@/components/Agenda/agenda";
+import { Agenda } from "@/components/Agenda/Agenda";
 import { getData } from "./api/getData";
-import { AgendaProps } from "@/components/Agenda/agenda.type";
+import { Appointement } from "@/components/Agenda/Agenda.type";
+import { changeMonth } from "./api/changeMonth";
+import { createAppointement } from "./api/createAppointement";
 
 const GET_OFFER_API =
-  "https://api.staging.bsport.io/api/v1/offer/?min_date=2019-03-01&max_date=2019-03-31&company=6";
-const currentDate = "2019-03-30";
+  "https://api.staging.bsport.io/api/v1/offer/?company=6&min_date=";
 
 export default function AgendaScreen() {
-  const [offer, setOffer] = useState(getData(GET_OFFER_API));
-  const [agendaData, setAgendaData] = useState<AgendaProps["schedulerData"]>();
+  const [agendaData, setAgendaData] = useState<Array<Appointement>>();
+  const [currentDate, setCurrentDate] = useState<Date>(
+    new Date("Mon Apr 01 2019 00:00:00")
+  );
+  const [startDate, setStartDate] = useState<Date>(
+    new Date("Fri Mar 15 2019 00:00:00")
+  );
+  const [endDate, setEndDate] = useState<Date>(
+    new Date("Wed May 15 2019 00:00:00")
+  );
+  const [offer, setOffer] = useState<Promise<any>>();
 
   useEffect(() => {
-    offer.then(async (data) => {
-      setAgendaData(
-        await Promise.all(
-          data.results.map(async (time) => {
-            const activityName = getData(
-              "https://api.staging.bsport.io/api/v1/meta-activity/?id__in=" +
-                time.activity +
-                "&company=6"
-            ).then((response) => response.results[0].name);
-            const coachName = getData(
-              "https://api.staging.bsport.io/api/v1/coach/?company=6&id__in=" +
-                time.coach
-            ).then((response) => response.results[0].user.name);
-            const establishmentName = getData(
-              "https://api.staging.bsport.io/api/v1/establishment/?company=6&id__in=" +
-                time.establishment
-            ).then((response) => response.results[0].title);
-            const endDate = new Date(time.date_start);
+    if (offer) {
+      offer.then(async (data) => {
+        // console.log("oofer", data);
 
-            endDate.setUTCMinutes(time.duration_minute);
-            return {
-              startDate: new Date(time.date_start),
-              endDate: endDate,
-              title: await activityName,
-              coach: await coachName,
-              establishment: await establishmentName,
-            };
-          })
-        )
-      );
+        setAgendaData(
+          await Promise.all(
+            data.results.map(async (time: any) => {
+              console.log("before ::", time);
 
-      console.log(agendaData);
-    });
+              return await createAppointement(time);
+            })
+          )
+        );
+      });
+    }
   }, [offer]);
 
-  return <Agenda schedulerData={agendaData || []} currentDate={currentDate} />;
+  useEffect(() => {
+    setOffer(
+      getData(GET_OFFER_API + changeMonth({ currentDate, startDate, endDate }))
+    );
+  }, [currentDate]);
+
+  return (
+    <Agenda
+      schedulerData={agendaData || []}
+      currentDate={currentDate}
+      changeDate={setCurrentDate}
+    />
+  );
 }

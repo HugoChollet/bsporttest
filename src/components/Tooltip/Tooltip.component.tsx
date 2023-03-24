@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Appointement } from "../Agenda/agenda.type";
+import { Appointement } from "../Agenda/Agenda.type";
 import { container, subtitle, title } from "./Tooltip.styles";
 
 export const Tooltip = (model: { data: Appointement }) => {
