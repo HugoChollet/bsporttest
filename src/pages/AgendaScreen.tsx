@@ -8,11 +8,9 @@ const GET_OFFER_API =
   "https://api.staging.bsport.io/api/v1/offer/?company=6&min_date=";
 
 export default function AgendaScreen() {
-  const [currentDate, setCurrentDate] = useState<Date>(
-    new Date("Mon Apr 01 2019 00:00:00")
-  );
-  const [startDate] = useState(new Date("Fri Mar 15 2019 00:00:00"));
-  const [endDate] = useState(new Date("Wed May 15 2019 00:00:00"));
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [startDate] = useState(new Date());
+  const [endDate] = useState(new Date());
   const [offer, setOffer] = useState<any>();
   const [contentsId, setContentsId] = useState<Array<any>>();
 
@@ -30,7 +28,7 @@ export default function AgendaScreen() {
         await Promise.all(
           data.results.map((time: any) => {
             return {
-              activityId: time.activity,
+              activityId: time.meta_activity,
               coachId: time.coach,
               establishmentId: time.establishment,
             };
