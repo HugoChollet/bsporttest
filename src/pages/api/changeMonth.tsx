@@ -4,22 +4,17 @@ type changeMonthProps = {
   endDate: Date;
 };
 
+const MONTH_UNIX = 2078400000;
+
 export const changeMonth = ({
   currentDate,
   startDate,
   endDate,
 }: changeMonthProps) => {
-  console.log(currentDate);
-
-  if (currentDate.getMonth() <= startDate.getMonth()) {
-    console.log("going down");
-
+  if (currentDate.getTime() - MONTH_UNIX <= startDate.getTime()) {
     startDate.setMonth(startDate.getMonth() - 1);
     endDate.setMonth(endDate.getMonth() - 1);
-  }
-  if (currentDate.getMonth() >= endDate.getMonth()) {
-    console.log("going up");
-
+  } else if (currentDate.getTime() + MONTH_UNIX >= endDate.getMonth()) {
     endDate.setMonth(endDate.getMonth() + 1);
     startDate.setMonth(startDate.getMonth() + 1);
   }
