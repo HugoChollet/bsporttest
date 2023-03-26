@@ -4,20 +4,15 @@ type changeMonthProps = {
   endDate: Date;
 };
 
-const MONTH_UNIX = 2078400000;
+const MONTH_UNIX = 2678400000;
 
 export const changeMonth = ({
   currentDate,
   startDate,
   endDate,
 }: changeMonthProps) => {
-  if (currentDate.getTime() - MONTH_UNIX <= startDate.getTime()) {
-    startDate.setMonth(startDate.getMonth() - 1);
-    endDate.setMonth(endDate.getMonth() - 1);
-  } else if (currentDate.getTime() + MONTH_UNIX >= endDate.getMonth()) {
-    endDate.setMonth(endDate.getMonth() + 1);
-    startDate.setMonth(startDate.getMonth() + 1);
-  }
+  startDate.setTime(currentDate.getTime() - MONTH_UNIX);
+  endDate.setTime(currentDate.getTime() + MONTH_UNIX);
 
   return (
     startDate.getUTCFullYear() +
