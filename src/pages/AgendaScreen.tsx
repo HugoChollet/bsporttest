@@ -1,56 +1,63 @@
 import { useEffect, useState } from "react";
 
-import { Agenda } from "@/components/Agenda/Agenda";
 import { getData } from "./api/getData";
 import { Appointement } from "@/components/Agenda/Agenda.type";
 import { changeMonth } from "./api/changeMonth";
-import { createAppointement } from "./api/createAppointement";
+import { AppointementList } from "@/components/AppointementList/AppointementList.component";
 
 const GET_OFFER_API =
   "https://api.staging.bsport.io/api/v1/offer/?company=6&min_date=";
 
 export default function AgendaScreen() {
-  const [agendaData, setAgendaData] = useState<Array<Appointement>>();
   const [currentDate, setCurrentDate] = useState<Date>(
     new Date("Mon Apr 01 2019 00:00:00")
   );
-  const [startDate, setStartDate] = useState<Date>(
-    new Date("Fri Mar 15 2019 00:00:00")
-  );
-  const [endDate, setEndDate] = useState<Date>(
-    new Date("Wed May 15 2019 00:00:00")
-  );
-  const [offer, setOffer] = useState<Promise<any>>();
+  const [startDate] = useState(new Date("Fri Mar 15 2019 00:00:00"));
+  const [endDate] = useState(new Date("Wed May 15 2019 00:00:00"));
+  const [offer, setOffer] = useState<any>();
+  const [contentsId, setContentsId] = useState<Array<any>>();
+
+  const noDuplicate = (array: Array<number>) => {
+    return array.filter((element: number, index: number) => {
+      return array.indexOf(element) === index;
+    });
+  };
 
   useEffect(() => {
-    if (offer) {
-      offer.then(async (data) => {
-        // console.log("oofer", data);
-
-        setAgendaData(
-          await Promise.all(
-            data.results.map(async (time: any) => {
-              console.log("before ::", time);
-
-              return await createAppointement(time);
-            })
-          )
-        );
-      });
-    }
-  }, [offer]);
-
-  useEffect(() => {
-    setOffer(
-      getData(GET_OFFER_API + changeMonth({ currentDate, startDate, endDate }))
-    );
+    getData(
+      GET_OFFER_API + changeMonth({ currentDate, startDate, endDate })
+    ).then(async (data) => {
+      setContentsId(
+        await Promise.all(
+          data.results.map((time: any) => {
+            return {
+              activityId: time.activity,
+              coachId: time.coach,
+              establishmentId: time.establishment,
+            };
+          })
+        )
+      );
+      setOffer(data);
+    });
   }, [currentDate]);
 
   return (
-    <Agenda
-      schedulerData={agendaData || []}
-      currentDate={currentDate}
-      changeDate={setCurrentDate}
-    />
+    <div>
+      {offer && contentsId ? (
+        <AppointementList
+          offer={offer.results}
+          activityId={noDuplicate(contentsId.map((data) => data.activityId))}
+          coachId={noDuplicate(contentsId.map((data) => data.coachId))}
+          establishmentId={noDuplicate(
+            contentsId.map((data) => data.establishmentId)
+          )}
+          currentDate={currentDate}
+          changeDate={setCurrentDate}
+        />
+      ) : (
+        <div>Loading</div>
+      )}
+    </div>
   );
 }

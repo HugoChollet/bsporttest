@@ -1,7 +1,7 @@
 export type Appointement = {
-  startDate: string;
-  endDate: string;
-  title: string;
+  startDate: Date;
+  endDate: Date;
+  activity: string;
   coach: string;
   establishment: string;
 };

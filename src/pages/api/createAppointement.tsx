@@ -1,32 +1,40 @@
-import { getData } from "./getData";
+type createAppointementProps = {
+  time: any;
+  activityName: Array<any>;
+  coachName: Array<any>;
+  establishmentName: Array<any>;
+};
 
-const GET_ACTIVITY_API =
-  "https://api.staging.bsport.io/api/v1/meta-activity/?company=6&id__in=";
-const GET_COACH_API =
-  "https://api.staging.bsport.io/api/v1/coach/?company=6&id__in=";
-const GET_ESTABLISHEMENT_API =
-  "https://api.staging.bsport.io/api/v1/establishment/?company=6&id__in=";
-
-export const createAppointement = async (time: any) => {
-  console.log("time ::", time);
-
+export const createAppointement = async ({
+  time,
+  activityName,
+  coachName,
+  establishmentName,
+}: createAppointementProps) => {
   const endDate = new Date(time.date_start);
-  const activityName = getData(GET_ACTIVITY_API + time.activity).then(
-    (response) => response.results[0].name
-  );
-  const coachName = getData(GET_COACH_API + time.coach).then(
-    (response) => response.results[0].user.name
-  );
-  const establishmentName = getData(
-    GET_ESTABLISHEMENT_API + time.establishment
-  ).then((response) => response.results[0].title);
 
   endDate.setUTCMinutes(time.duration_minute);
+  if (
+    !activityName.find((item: any[]) => item[0] === time.activity) ||
+    !coachName.find((item: any[]) => item[0] === time.coach) ||
+    !establishmentName.find((item: any[]) => item[0] === time.establishment)
+  ) {
+    return {
+      startDate: new Date(time.date_start),
+      endDate: endDate,
+      activity: "Searching",
+      coach: "Searching",
+      establishment: "Searching",
+    };
+  }
+
   return {
     startDate: new Date(time.date_start),
     endDate: endDate,
-    title: await activityName,
-    coach: await coachName,
-    establishment: await establishmentName,
+    activity: activityName.find((item: any[]) => item[0] === time.activity)[1],
+    coach: coachName.find((item: any[]) => item[0] === time.coach)[1],
+    establishment: establishmentName.find(
+      (item: any[]) => item[0] === time.establishment
+    )[1],
   };
 };
