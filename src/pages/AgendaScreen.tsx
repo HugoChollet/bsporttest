@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 import { getData } from "./api/getData";
-import { Appointement } from "@/components/Agenda/Agenda.type";
 import { changeMonth } from "./api/changeMonth";
 import { AppointementList } from "@/components/AppointementList/AppointementList.component";
 
