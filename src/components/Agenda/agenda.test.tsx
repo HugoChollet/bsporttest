@@ -1,6 +1,6 @@
 import * as React from "react";
 import renderer from "react-test-renderer";
-import { Agenda } from "./Agenda";
+import { Agenda } from "./Agenda.component";
 
 const mockDate = "2018-11-01";
 const mockData = [

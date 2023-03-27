@@ -1,6 +1,6 @@
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
-import AgendaScreen from "./AgendaScreen";
+import AgendaScreen from "./AgendaScreen.tsx";
 import { LinkCard } from "@/components/LinkCard/LinkCard.component";
 
 export default function Home() {

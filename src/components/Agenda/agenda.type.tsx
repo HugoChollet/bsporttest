@@ -1,10 +1,7 @@
 export type Appointement = {
-  startDate: string;
-  endDate: string;
-  title: string;
-};
-
-export type AgendaProps = {
-  schedulerData: Array<Appointement>;
-  currentDate: string;
+  startDate: Date;
+  endDate: Date;
+  activity: string;
+  coach: string;
+  establishment: string;
 };

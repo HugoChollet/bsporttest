@@ -1,33 +1,60 @@
 import { useEffect, useState } from "react";
 
-import { Agenda } from "@/components/Agenda/agenda";
 import { getData } from "./api/getData";
-import { AgendaProps } from "@/components/Agenda/agenda.type";
+import { changeMonth } from "./api/changeMonth";
+import { AppointementList } from "@/components/AppointementList/AppointementList.component";
 
-const GETAPI =
-  "https://api.staging.bsport.io/api/v1/offer/?min_date=2019-03-01&max_date=2019-03-31&company=6";
-const currentDate = "2019-03-30";
+const GET_OFFER_API =
+  "https://api.staging.bsport.io/api/v1/offer/?company=6&min_date=";
 
 export default function AgendaScreen() {
-  const [offer, setOffer] = useState(getData(GETAPI));
-  const [agendaData, setAgendaData] = useState<AgendaProps["schedulerData"]>();
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [startDate] = useState(new Date());
+  const [endDate] = useState(new Date());
+  const [offer, setOffer] = useState<any>();
+  const [contentsId, setContentsId] = useState<Array<any>>();
+
+  const noDuplicate = (array: Array<number>) => {
+    return array.filter((element: number, index: number) => {
+      return array.indexOf(element) === index;
+    });
+  };
 
   useEffect(() => {
-    offer.then((data) => {
-      setAgendaData(
-        data.results.map((time) => {
-          const endDate = new Date(time.date_start);
-          endDate.setUTCMinutes(time.duration_minute);
-
-          return {
-            startDate: new Date(time.date_start),
-            endDate: endDate,
-            title: "Appointement",
-          };
-        })
+    getData(
+      GET_OFFER_API + changeMonth({ currentDate, startDate, endDate })
+    ).then(async (data) => {
+      setContentsId(
+        await Promise.all(
+          data.results.map((time: any) => {
+            return {
+              activityId: time.meta_activity,
+              coachId: time.coach,
+              establishmentId: time.establishment,
+            };
+          })
+        )
       );
+      setOffer(data);
     });
-  }, [offer]);
+  }, [currentDate]);
 
-  return <Agenda schedulerData={agendaData || []} currentDate={currentDate} />;
+  return (
+    <div>
+      {offer && contentsId ? (
+        <AppointementList
+          offer={offer.results}
+          activityId={noDuplicate(contentsId.map((data) => data.activityId))}
+          coachId={noDuplicate(contentsId.map((data) => data.coachId))}
+          establishmentId={noDuplicate(
+            contentsId.map((data) => data.establishmentId)
+          )}
+          currentDate={currentDate}
+          changeDate={setCurrentDate}
+        />
+      ) : (
+        <div>Loading</div>
+      )}
+    </div>
+  );
 }
