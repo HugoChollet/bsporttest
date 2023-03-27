@@ -32,5 +32,6 @@ export const createAppointement = async ({
       : establishmentName.find(
           (item: any[]) => item[0] === time.establishment
         )[1],
+    available: time.available,
   };
 };

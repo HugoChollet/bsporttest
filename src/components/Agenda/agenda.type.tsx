@@ -4,4 +4,5 @@ export type Appointement = {
   activity: string;
   coach: string;
   establishment: string;
+  available: boolean;
 };
