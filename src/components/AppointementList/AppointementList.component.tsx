@@ -1,7 +1,7 @@
 import { Agenda } from "@/components/Agenda/Agenda.component";
 import { useEffect, useState } from "react";
-import { createAppointement } from "../../pages/api/createAppointement";
-import { getData } from "../../pages/api/getData";
+import { createAppointement } from "../../pages/api/createAppointement/createAppointement";
+import { getData } from "../../pages/api/getData/getData";
 import { Appointement } from "../Agenda/Agenda.type";
 
 const GET_ACTIVITY_API =

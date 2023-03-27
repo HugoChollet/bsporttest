@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-import { getData } from "./api/getData";
-import { changeMonth } from "./api/changeMonth";
+import { getData } from "./api/getData/getData";
+import { changeMonth } from "./api/changeMonth/changeMonth";
 import { AppointementList } from "@/components/AppointementList/AppointementList.component";
 
 const GET_OFFER_API =
