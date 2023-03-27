@@ -6,6 +6,7 @@ const mockTime = {
   meta_activity: "yoga",
   coach: "john_doe",
   establishment: "gym_abc",
+  available: true,
 };
 const mockActivityName = [["yoga", "Yoga Class"]];
 const mockCoachName = [["john_doe", "John Doe"]];
@@ -25,6 +26,7 @@ describe("createAppointement", () => {
       activity: "Yoga Class",
       coach: "John Doe",
       establishment: "ABC Gym",
+      available: true,
     };
 
     const result = await createAppointement(input);
@@ -48,6 +50,7 @@ describe("createAppointement", () => {
       activity: "Searching",
       coach: "John Doe",
       establishment: "ABC Gym",
+      available: true,
     };
 
     const result = await createAppointement(input);
@@ -71,6 +74,7 @@ describe("createAppointement", () => {
       activity: "Yoga Class",
       coach: "Searching",
       establishment: "ABC Gym",
+      available: true,
     };
 
     const result = await createAppointement(input);
@@ -94,6 +98,7 @@ describe("createAppointement", () => {
       activity: "Yoga Class",
       coach: "John Doe",
       establishment: "Searching",
+      available: true,
     };
 
     const result = await createAppointement(input);
